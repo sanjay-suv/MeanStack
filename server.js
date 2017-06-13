@@ -17,7 +17,7 @@ app.get('/meows', function(req, res, next){
     return res.json(meows);
   });
 });
-//ggggjgj
+//ggggj
 app.post('/meows', function(req, res, next){
   var newMeow = new Meow({
      text: req.body.newMeow
