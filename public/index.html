@@ -9,49 +9,56 @@
 	<script type="text/javascript" src="angular-cookies.js"></script>
 	
 	<script type="text/javascript">
-		var app = angular.module('mittens',['ngRoute']);
+		var app = angular.module('mittens',['ngRoute']);    // ngRoute is module routes your application to different pages without reloading the entire application
 
-app.config(function($routeProvider, $locationProvider) {
-	$routeProvider
-   .when('/', {
-    templateUrl: 'home.html',
-    controller: 'HomeController',
-})
-.when('/signup', {
-    templateUrl: 'signup.html',
-    controller: 'SignupController',
-});   
-  });
+	app.config(function($routeProvider, $locationProvider) {
+		$routeProvider
+	   .when('/', {
+		    templateUrl: 'home.html',			// Default page trigger
+		    controller: 'HomeController',		// Controller which should be CRUD operation 
+		})
+		.when('/signup', {
+		    templateUrl: 'signup.html',
+		    controller: 'SignupController',
+		});   
+	});
 
-		app.controller('HomeController', function($scope,$http){	
-			function getMeows(){
-					$http.get('/meows').then(function(responce){
-							$scope.meows=responce.data;
-						});		
-			}
-		getMeows();
+	// Here CRUD operation under HomeController
+	app.controller('HomeController', function($scope,$http){	
+		// View the all data
+		function getMeows(){
+				$http.get('/meows').then(function(responce){
+						$scope.meows=responce.data;
+					});		
+				}
+	
+		getMeows();  // By default display the all records from meows table
 
-		$scope.submitNewMeow=function(){
-			$http.post('/meows', { newMeow: $scope.newMeow}).then(function(){
-				getMeows();
-				$scope.newMeow='';
-			});
-		};
+	// Add functionality	
+	$scope.submitNewMeow=function(){
+		$http.post('/meows', { newMeow: $scope.newMeow}).then(function(){
+			getMeows();
+			$scope.newMeow='';
+		});
+	};
 
-		$scope.removeMeow=function(meow){
+	// Delete functionality.
+	$scope.removeMeow=function(meow){
 		$http.put('/meows/remove',{ meow: meow}).then(function(){
 			getMeows();
 		});
-}; 
+	}; 
 
 
-		});
+});     // End line of HomeController
 
 app.controller('SignupController', function($scope,$http){
 	
 	console.log('You are on the Signup Page');
-});
-	</script>
+
+});    // End line of SignupController
+
+</script>
 </head>
 <body>
 <h1 class="page-title"><a href="#!/"> Mittens </a></h1>

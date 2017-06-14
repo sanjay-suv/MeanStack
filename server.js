@@ -6,18 +6,21 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-mongoose.connect('mongodb://localhost:27017/mittens');
+mongoose.connect('mongodb://localhost:27017/mittens');  // mittens is database
 
+// Here Meow is a schema. It is like to view and will bind to collection.
 var Meow=mongoose.model('Meow',{
   text: String
 })
 
+// Get the data from meows table/ collection if exits the records.
 app.get('/meows', function(req, res, next){
   Meow.find({}, function(err, meows){
     return res.json(meows);
   });
 });
-//ggggj
+
+// We can ingest the data into meows collection / table through view Meow.
 app.post('/meows', function(req, res, next){
   var newMeow = new Meow({
      text: req.body.newMeow
@@ -27,6 +30,7 @@ app.post('/meows', function(req, res, next){
   });
 });
 
+// Here we can delete the records
 app.put('/meows/remove', function(req, res, next){
 var meowId=req.body.meow._id;		
 		Meow.remove({_id: meowId}, function(err){
@@ -34,8 +38,8 @@ var meowId=req.body.meow._id;
 	});
 });
 
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+// Listen on port 3001
+app.listen(3001, function () {
+  console.log('Example app listening on port 3001!')
 });
 
