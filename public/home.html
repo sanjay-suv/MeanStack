@@ -15,7 +15,9 @@
 <input type="text" class="form-control" placeholder="new meow" ng-model="newMeow">
 <button type="button" class="btn" ng-click="submitNewMeow()">Submit</button>
 </div>
-
+<!--       
+Here using loop via ng-repeat, this loop will work for all records of meows collection 
+-->
 <h3 ng-repeat="meow in meows">
 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 {{meow.text}}

@@ -4,11 +4,11 @@ var mongoose=require('mongoose');
 var app = express();
 app.use(bodyParser.json());
 
-app.use(express.static('public'));
+app.use(express.static('public'));  // public is a folder 
 
 mongoose.connect('mongodb://localhost:27017/mittens');  // mittens is database
 
-// Here Meow is a schema. It is like to view and will bind to collection.
+// Here Meow is a schema. It is like view and will bind to field which is under collection.
 var Meow=mongoose.model('Meow',{
   text: String
 })
