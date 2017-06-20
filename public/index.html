@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="angular-cookies.js"></script>
 	
 	<script type="text/javascript">
-		var app = angular.module('mittens',['ngRoute']);    // ngRoute is module routes your application to different pages without reloading the entire application
+		var app = angular.module('mittens',['ngRoute','ngCookies']);    // ngRoute is module routes your application to different pages without reloading the entire application
 
 	app.config(function($routeProvider, $locationProvider) {
 		$routeProvider
@@ -23,8 +23,15 @@
 		});   
 	});
 
+	app.run(function($rootScope,$cookies){
+		if($cookies.get('token')&& $cookies.get('currentUser')){
+			$rootScope.token=$cookies.get('token');
+			$rootScope.currentUser=$cookies.get('currentUser');
+		}
+	});
+	
 	// Here CRUD operation under HomeController
-	app.controller('HomeController', function($scope,$http){	
+	app.controller('HomeController', function($rootScope, $scope,$http, $cookies){	
 		// View the all data
 		function getMeows(){
 				$http.get('/meows').then(function(responce){
@@ -44,10 +51,39 @@
 
 	// Delete functionality.
 	$scope.removeMeow=function(meow){
-		$http.put('/meows/remove',{ meow: meow}).then(function(){
+		$http.put('/meows123',{ meow: meow}).then(function(){
 			getMeows();
 		});
 	}; 
+/*
+// Current user login encrypt in F12 cookies/ application	
+	$scope.signin=function(){
+	$http.put('/users/signin',{ username: $scope.username,password: $scope.password})
+	.then(function(res){
+		$cookies.put('token',res.data.token);
+		$scope.currentUser=$scope.username;
+		alert('successfully signed in');
+	}, function(err){
+		alert('Bad login credentials');
+	});
+	};
+*/
+
+// Current user login shows in F12 cookies/ application	
+	$scope.signin=function(){
+	$http.put('/users/signin',{ username: $scope.username,password: $scope.password})
+	.then(function(res){
+		$cookies.put('token',res.data.token);
+		$cookies.put('currentUser',$scope.username);
+		$rootScope.token=res.data.token;
+		$rootScope.currentUser=$scope.username;
+		alert('successfully signed in');
+	}, function(err){
+		alert('Bad login credentials');
+	});
+	};
+
+
 
 
 });     // End line of HomeController
@@ -55,7 +91,16 @@
 app.controller('SignupController', function($scope,$http){
 	
 	// Start signup coding
-
+    $scope.submitSignup=function(){
+	var newUser= {
+		username: $scope.username,
+		password: $scope.password
+	};		
+	$http.post('/users',newUser).then(function(){
+				alert('Success');
+		});
+	};	
+	
 	console.log('You are on the Signup Page');
 
 });    // End line of SignupController
