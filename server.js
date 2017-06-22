@@ -12,6 +12,7 @@ mongoose.connect('mongodb://localhost:27017/mittens');  // mittens is database
 var jwt = require('jwt-simple');
 var JWT_SECRET='catsmeow';
 
+// user sign of access
 app.put('/users/signin', function(req, res, next){
 
   User.findOne({username:req.body.username}, function(err, user){
@@ -27,7 +28,7 @@ app.put('/users/signin', function(req, res, next){
   });
 });
 
-
+// 
 var bcrypt = require('bcryptjs');
 
 app.post('/users', function(req, res, next){	
